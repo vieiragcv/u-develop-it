@@ -71,7 +71,7 @@ db.query(sql, params, (err, result) => {
   console.log(result);
 });
 
-/* TEST */
+
 
 /*---------------------------------------------------------------
 -                     PASTE "Hello World on HTML"
