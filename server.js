@@ -1,12 +1,10 @@
-const mysql = require('mysql2');
 const express = require('express');
+const db = require('./db/connection');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
 
 const inputCheck = require('./utils/inputCheck');
-
-
 
 /*---------------------------------------------------------------
 -                       Express middleware
@@ -16,32 +14,21 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 /*---------------------------------------------------------------
--                       CONNECT to database
+-                       QUERY & LOG (validation)
 ---------------------------------------------------------------*/
-
-const db = mysql.createConnection(
-  {
-    host: 'localhost',
-    user: 'root',
-    password: 'X9s0R0xpto#i7rzX8$*',
-    database: 'election'
-  },
-  console.log('Connected to the election database.')
-);
 
 db.query(`SELECT * FROM candidates`, (err, rows) => {
   console.log(rows);
 });
 
-
 /*---------------------------------------------------------------
 
--                            ROUTES
+-                        CANDIDATE ROUTES
 
 ---------------------------------------------------------------*/
 
 /*---------------------------------------------------------------
--                       GET ALL candidates
+-                         GET ALL
 ---------------------------------------------------------------*/
 
 app.get('/api/candidates', (req, res) => {
@@ -65,7 +52,7 @@ app.get('/api/candidates', (req, res) => {
 });
 
 /*---------------------------------------------------------------
--                       GET a single candidate
+-                         GET by ID
 ---------------------------------------------------------------*/
 
 app.get('/api/candidate/:id', (req, res) => {
@@ -92,7 +79,7 @@ app.get('/api/candidate/:id', (req, res) => {
 });
 
 /*---------------------------------------------------------------
--                      DELETE a candidate
+-                           DELETE
 ---------------------------------------------------------------*/
 
 app.delete('/api/candidate/:id', (req, res) => {
@@ -117,7 +104,7 @@ app.delete('/api/candidate/:id', (req, res) => {
 });
 
 /*---------------------------------------------------------------
--                      CREATE a candidate
+-                           CREATE
 ---------------------------------------------------------------*/
 
 app.post('/api/candidate', ({ body }, res) => {
@@ -143,7 +130,7 @@ app.post('/api/candidate', ({ body }, res) => {
 });
 
 /*---------------------------------------------------------------
--                    UPDATE a candidate party affiliation
+-                    UPDATE by Affiliation
 ---------------------------------------------------------------*/
 
 app.put('/api/candidate/:id', (req, res) => {
@@ -179,7 +166,12 @@ app.put('/api/candidate/:id', (req, res) => {
 });
 
 /*---------------------------------------------------------------
--                       GET ALL parties
+
+-                        PARTIES ROUTES
+
+---------------------------------------------------------------*/
+/*---------------------------------------------------------------
+-                         GET ALL PARTIES
 ---------------------------------------------------------------*/
 
 app.get('/api/parties', (req, res) => {
@@ -197,7 +189,7 @@ app.get('/api/parties', (req, res) => {
 });
 
 /*---------------------------------------------------------------
--                       GET single party
+-                       GET 1 PARTY
 ---------------------------------------------------------------*/
 app.get('/api/party/:id', (req, res) => {
   const sql = `SELECT * FROM parties WHERE id = ?`;
@@ -215,7 +207,7 @@ app.get('/api/party/:id', (req, res) => {
 });
 
 /*---------------------------------------------------------------
--                       DELETE single party
+-                       DELETE 1 PARTY
 ---------------------------------------------------------------*/
 
 app.delete('/api/party/:id', (req, res) => {
@@ -238,6 +230,13 @@ app.delete('/api/party/:id', (req, res) => {
     }
   });
 });
+
+/*---------------------------------------------------------------
+
+-                         xxxxxx
+
+---------------------------------------------------------------*/
+
 
 
 /*---------------------------------------------------------------
